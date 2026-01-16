@@ -42,20 +42,20 @@ with st.sidebar:
     st.title("📊 Analysis Insights")
     if not df.empty:
         st.metric("Total Articles", f"{len(df):,}")
-        st.write("📈 **Sentiment Distribution**")
+        st.write("**Sentiment Distribution**")
         st.bar_chart(df['sentiment'].value_counts())
     st.divider()
-    num_results = st.slider("Results to Analyze", 1, 10, 3)
+    num_results = st.slider("Results to Analyze", 1, 10, 1)
     search_depth = st.select_slider("Search Depth", options=[100, 200, 300, 500], value=300)
 
 # --- 3. Main Area ---
-st.title("🧠 AI News Researcher")
+st.title("AI News Researcher")
 st.markdown("Transforming BBC News into **Active Intelligence**.")
 
 if "search_word" not in st.session_state:
     st.session_state.search_word = ""
 
-st.write("🔥 **Research Hotspots:**")
+st.write(" **Research Hotspots:**")
 hot_keywords = ["Technology", "Economy", "Climate", "Politics", "Health"]
 cols = st.columns(len(hot_keywords))
 
@@ -67,7 +67,7 @@ for i, word in enumerate(hot_keywords):
 def sync_input():
     st.session_state.search_word = st.session_state.user_input_key
 
-query = st.text_input("🔍 Search topic:", value=st.session_state.search_word, key="user_input_key", on_change=sync_input)
+query = st.text_input("Search topic:", value=st.session_state.search_word, key="user_input_key", on_change=sync_input)
 query = st.session_state.search_word
 
 # --- 4. Retrieval & Analysis ---
@@ -81,11 +81,11 @@ if query and not df.empty:
         top_results = sub_df.iloc[top_indices].copy()
 
     with st.chat_message("assistant"):
-        st.write(f"### 📝 Executive Summary: {query}")
+        st.write(f"###Executive Summary: {query}")
         sentiment_mode = top_results['sentiment'].mode()[0]
         st.write(f"Key finding: The top reports focus on **{top_results.iloc[0]['title']}**. Overall mood is **{sentiment_mode}**.")
 
-    st.write("📅 **Reporting Trend**")
+    st.write(" **Reporting Trend**")
     if 'pubdate' in top_results.columns:
         trend_df = top_results.set_index('pubdate').resample('D').size()
         st.line_chart(trend_df)
